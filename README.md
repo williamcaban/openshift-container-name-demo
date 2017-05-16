@@ -25,6 +25,12 @@ The HTTPS URL of this code repository which should be supplied to the _Git Repos
 If using the ``oc`` command line tool instead of the OpenShift web console, to deploy this sample Python web application, you can run:
 
 ```
+oc new-project demo-python
+oc new-app http://d-git.atcosp.local/DevOps/openshift-demo-python.git
+```
+
+Or using the original source
+```
 oc new-app https://github.com/OpenShiftDemos/os-sample-python.git
 ```
 
