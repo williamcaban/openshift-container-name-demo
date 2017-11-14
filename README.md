@@ -26,6 +26,15 @@ If using the ``oc`` command line tool instead of the OpenShift web console, to d
 
 ```
 oc new-project demo-python
+```
+
+To run it from git
+```
+oc new-app https://github.com/williamcaban/openshift-container-name-demo.git
+```
+
+To run it from internal repo
+```
 oc new-app http://d-git.atcosp.local/DevOps/openshift-demo-python.git
 ```
 
@@ -46,6 +55,3 @@ To create a URL route
 ```
 oc expose svc/openshift-demo-python
 ```
-
-
-
