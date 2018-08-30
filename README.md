@@ -33,25 +33,35 @@ To run it from git
 oc new-app https://github.com/williamcaban/openshift-container-name-demo.git
 ```
 
-To run it from internal repo
-```
-oc new-app http://d-git.atcosp.local/DevOps/openshift-demo-python.git
-```
-
-Or using the original source
-```
-oc new-app https://github.com/OpenShiftDemos/os-sample-python.git
-```
-
-In this case, because no language type was specified, OpenShift will determine the language by inspecting the code repository. Because the code repository contains a ``requirements.txt``, it will subsequently be interpreted as including a Python application. When such automatic detection is used, ``python:latest`` will be used.
-
-If needing to select a specific Python version when using ``oc new-app``, you should instead use the form:
-
-```
-oc new-app python:2.7~https://github.com/OpenShiftDemos/os-sample-python.git
-```
-
 To create a URL route
 ```
-oc expose svc/openshift-demo-python
+oc expose svc/openshift-container-name-demo
+```
+
+To get the text output displaying the name use the /hello path
+```
+while sleep 1; do curl http://$(oc get route openshift-container-name-demo --template='{{ .spec.host }}'/hello); echo; done
+```
+
+Scale to 3 replicas and validate pods have been created
+```
+oc scale --replicas=3 dc/openshift-container-name-demo
+
+oc get pods
+```
+
+Destroy one of the Pods and watch the system remediate.
+```
+oc delete po/<name-of-pod>
+```
+
+
+## Notes
+
+In the previous example, because no language type was specified, OpenShift will determine the language by inspecting the code repository. Because the code repository contains a ``requirements.txt``, it will subsequently be interpreted as including a Python application. When such automatic detection is used, ``python:latest`` will be used.
+
+If needing to select a specific Python version, lets say python 2.7, when using ``oc new-app``, you should instead use the syntax:
+
+```
+oc new-app python:2.7~https://github.com/williamcaban/openshift-container-name-demo.git
 ```
