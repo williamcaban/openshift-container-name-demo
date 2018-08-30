@@ -10,7 +10,7 @@ def index():
 
 @application.route("/hello")
 def hello():
-    return "Hello World! from " + os.uname()[1]
+    return "Hello from " + os.uname()[1]
 
 if __name__ == "__main__":
     application.run()
