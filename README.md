@@ -55,6 +55,26 @@ Destroy one of the Pods and watch the system remediate.
 oc delete po/<name-of-pod>
 ```
 
+## Simulating webhooks rebuild events
+
+Display the BuildConfig to identify the "Webhook Generic" URL
+```
+oc describe bc/openshift-container-name-demo
+```
+
+The <secret> in the URL will be the output of this command
+```
+oc get bc -o json | jq '.items[0] .spec.triggers[].generic.secret' | grep -v null
+```
+
+You can also find the correct URL over the console at the configuration tab of the build config:
+
+https://<your-okd-path>/console/project/demo-python/browse/builds/openshift-container-name-demo?tab=configuration
+
+Simulating a generic Webhook event:
+```
+curl -X POST -k https://<your-okd-path>/apis/build.openshift.io/v1/namespaces/demo-python/buildconfigs/openshift-container-name-demo/webhooks/<secret>/generic
+```
 
 ## Notes
 
