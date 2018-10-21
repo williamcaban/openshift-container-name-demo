@@ -32,7 +32,8 @@ def hello():
 def status():
     return jsonify(status="OK",
                    container_name=CONTAINER_NAME,
-                   container_version=CONTAINER_VERSION)
+                   container_version=CONTAINER_VERSION,
+                   container_message=CONTAINER_MESSAGE)
 
 
 if __name__ == "__main__":

@@ -1,14 +1,27 @@
-# Flask Sample Application
+# Simple Demo Application Used to Showcase OpenShift Concepts
 
-This repository provides a sample Python web application implemented using the Flask web framework and hosted using ``gunicorn``. It is intended to be used to demonstrate deployment of Python web applications to OpenShift 3.
-
-# Environment
+This repository provides a sample Python web application implemented using the Flask web framework. It is intended to be used to demonstrate deployment of Python web applications to OpenShift 3.x
 
 To test this apps you will need an OpenShift or OKD environment.
 
-If using Red Hat CDK you can start OpenShift (Minishift) 3.10.14 with the following command:
+# Using a Minishift Environment
+
+If using Red Hat CDK you can start OpenShift (Minishift) with the following command:
 ```
-minishift start --ocp-tag 3.10.14
+$minishift start
+```
+
+Additional minishft commands if using privileged containers
+```
+$ oc adm policy add-scc-to-group anyuid system:authenticated
+$ minishift addons enable anyuid
+$ minishift addons enable admin-user
+$ minishift start --ocp-tag v3.11.16
+```
+
+To explore additional Minishift addons
+```
+$ minishift addons list
 ```
 
 ## Implementation Notes
@@ -29,12 +42,12 @@ To deploy this sample Python web application from the OpenShift web console, you
 
 The HTTPS URL of this code repository which should be supplied to the _Git Repository URL_ field when using _Add to project_ is:
 
-* https://github.com/OpenShiftDemos/os-sample-python.git
+* https://github.com/williamcaban/openshift-container-name-demo.git
 
 If using the ``oc`` command line tool instead of the OpenShift web console, to deploy this sample Python web application, you can run:
 
 ```
-oc new-project demo-python
+oc new-project demo-app
 ```
 
 To run it from git
@@ -78,7 +91,7 @@ oc get bc -o json | jq '.items[0] .spec.triggers[].generic.secret' | grep -v nul
 
 You can also find the correct URL over the console at the configuration tab of the build config:
 
-https://<your-okd-path>/console/project/demo-python/browse/builds/openshift-container-name-demo?tab=configuration
+https://<your-okd-path>/console/project/demo-app/browse/builds/openshift-container-name-demo?tab=configuration
 
 Simulating a generic Webhook event:
 ```

@@ -25,10 +25,10 @@
     <style>
         body {
             line-height: 1.7em;
-            color: #fff ;
-            background-color: #000;
+            color: #FF0000 ;
+            background-color: #fff;
             font-family: "Helvetica Neue", helvetica, arial, sans-serif;
-            text-shadow: 1px 1px 8px rgba(255, 255, 255, 0.8);
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
             font-size: 34px;
             text-align: center;
             margin-top: 85px;
@@ -41,7 +41,7 @@
         h5,
         h6,
         label {
-            color: #fff;
+            color: #ff0000;
         }
 
         h1 {
@@ -69,12 +69,9 @@
      * INFO: and fade is value that determines how quickly the next image will fade in
      */
     $.backstretch([
-        // "https://unsplash.it/g/1600?image=1073"
-        // , "https://unsplash.it/g/1600?image=1068"
-        // , "https://unsplash.it/g/1600?image=1011",
-        "images/image01-1600.jpeg"
-        , "images/image02-1600.jpeg"
-        , "images/image03-1600.jpeg"
+        "static/images/image01-1600.jpeg"
+        , "static/images/image02-1600.jpeg"
+        , "static/images/image03-1600.jpeg"
     ], { duration: 3000, fade: 750 });
 </script>
 

@@ -1,5 +1,9 @@
 FROM python:3.4
-MAINTAINER William Caban
+
+LABEL AUTHOR="William Caban"
+
+ENV APP_VERSION v1 
+ENV APP_MESSAGE "Demo Container Default Message"
 
 WORKDIR /usr/src/app
 ENV APP_CONFIG=/usr/src/app/config.py
