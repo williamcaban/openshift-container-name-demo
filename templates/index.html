@@ -1,45 +1,81 @@
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title>CONTAINER DEMO</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="{{url_for('static', filename='assets/js/ie/html5shiv.js')}}"></script><![endif]-->
-		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
-		<!--[if lte IE 8]><link rel="{{url_for('static', filename='stylesheet" href="assets/css/ie8.css')}}" /><![endif]-->
-	</head>
-	<body class="homepage">
-		<div id="page-wrapper">
-			<!-- Header -->
-				<div id="header">
-					<!-- Inner -->
-						<div class="inner">
-							<header>
-								<h1><a href="/" id="logo">{{ container_name }}</a></h1>
-								<hr />
-								<p>Another container running the demo!</p>
-							</header>
-						</div>
+<!doctype html>
+<html lang="en">
 
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li><a href="/">Home</a></li>
-							</ul>
-						</nav>
+<head>
+    <meta charset="utf-8">
+    <title>Demo Page</title>
+    <meta name="description" content="Demo Page">
+    <meta name="author" content="https://github.com/williamcaban">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w"
+        crossorigin="anonymous">
+    <!--[if lt IE 9]>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+	<![endif]-->
+    <!--[if lte IE 8]>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+	<![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <style>
+        body {
+            line-height: 1.7em;
+            color: #fff ;
+            background-color: #000;
+            font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+            text-shadow: 1px 1px 8px rgba(255, 255, 255, 0.8);
+            font-size: 34px;
+            text-align: center;
+            margin-top: 85px;
+        }
 
-				</div>
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label {
+            color: #fff;
+        }
 
-		</div>
+        h1 {
+            text-transform: uppercase;
+        }
 
-		<!-- Scripts -->
-			<script src="{{url_for('static', filename='assets/js/jquery.min.js')}}"></script>
-			<script src="{{url_for('static', filename='assets/js/jquery.dropotron.min.js')}}"></script>
-			<script src="{{url_for('static', filename='assets/js/jquery.scrolly.min.js')}}"></script>
-			<script src="{{url_for('static', filename='assets/js/jquery.onvisible.min.js')}}"></script>
-			<script src="{{url_for('static', filename='assets/js/skel.min.js')}}"></script>
-			<script src="{{url_for('static', filename='assets/js/util.js')}}"></script>
-			<!--[if lte IE 8]><script src="{{url_for('static', filename='assets/js/ie/respond.min.js')}}"></script><![endif]-->
-			<script src="{{url_for('static', filename='assets/js/main.js')}}"></script>
-	</body>
+    </style>
+</head>
+
+<body>
+    <div class="pure-g">
+        <div class="pure-u-1">
+            <h1>{{ container_name }}</h1>
+            <h2>{{ container_version }}</h2>
+            <span>{{ container_message }}</span>
+        </div>
+    </div>
+</body>
+<script>
+    /*
+     * Here is an example of how to use Backstretch as a slideshow.
+     * Just pass in an array of images, and optionally a duration and fade value.
+     *
+     * INFO: Duration is the amount of time in between slides,
+     * INFO: and fade is value that determines how quickly the next image will fade in
+     */
+    $.backstretch([
+        // "https://unsplash.it/g/1600?image=1073"
+        // , "https://unsplash.it/g/1600?image=1068"
+        // , "https://unsplash.it/g/1600?image=1011",
+        "images/image01-1600.jpeg"
+        , "images/image02-1600.jpeg"
+        , "images/image03-1600.jpeg"
+    ], { duration: 3000, fade: 750 });
+</script>
+
 </html>
