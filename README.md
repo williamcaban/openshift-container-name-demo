@@ -65,34 +65,68 @@ oc new-app https://github.com/williamcaban/openshift-container-name-demo.git --n
 To create a URL route
 ```
 oc expose svc/myapp1 --name=myroute
+
+oc get route
 ```
 
-To get the text output displaying the name use the /hello path
+To get the text output displaying the name use the /hello path. Run the following command in another terminal:
 ```
-while sleep 1; do curl http://$(oc get route myapp1 --template='{{ .spec.host }}'/hello); echo; done
+while sleep 1; do curl http://$(oc get route myroute --template='{{ .spec.host }}'/hello); echo; done
 ```
 
 Scale to 3 replicas and validate pods have been created
 ```
+oc get pods -l app=myapp1
+
 oc scale --replicas=3 dc/myapp1
 
-oc get pods
+oc get pods -l app=myapp1
 ```
 
 Destroy one of the Pods and watch the system remediate.
 ```
+oc get pods -l app=myapp1
+
 oc delete po/<name-of-pod>
+
+oc get pods -l app=myapp1
 ```
 
-Deploy other version of the app
+Deploy another version of the app using ``Docker`` strategy
 ```
-oc new-app https://github.com/williamcaban/openshift-container-name-demo.git --name=myapp2 APP_VERSION=v2
+oc new-app https://github.com/williamcaban/openshift-container-name-demo.git --name=myapp2 --strategy=docker APP_VERSION=v2
 ```
 
-To deploy from local source code using *Docker* strategy
+To deploy from local source code using *``Docker``* strategy
 ```
-oc new-app </path/to/code> --strategy=docker
+oc new-app </path/to/code> --name=<app-name> --strategy=docker APP_VERSION=v3
+
+oc new-app ./ --name=myapp3 --strategy=docker APP_VERSION=v3
 ```
+
+Split traffic among the different versions and monitor the load balancing displayed in the terminal running the ``curl`` command
+```
+oc get route myroute
+
+# Update for 50-20-20 distribution
+oc set route-backends myroute myapp1=50% myapp2=25% myapp3=25%
+
+oc get route
+
+# Update for equal traffic distribution
+oc set route-backends myroute --equal
+
+oc get route
+
+# Update version 3 to only get 1% and notice the resulting balancing due to weight distribution.
+oc set route-backends myroute --adjust myapp3=5%
+
+oc get route
+
+```
+
+More information about advanced deployment strategies visit: https://docs.openshift.com/container-platform/3.11/dev_guide/deployments/advanced_deployment_strategies.html
+
 
 ## Simulating webhooks rebuild events
 
@@ -115,9 +149,9 @@ Simulating a generic Webhook event:
 curl -X POST -k https://<your-okd-path>/apis/build.openshift.io/v1/namespaces/demo-app/buildconfigs/myapp1/webhooks/<secret>/generic
 ```
 
-## Notes
+## Notes about Build Strategies
 
-In the previous example, because no language type was specified, OpenShift will determine the language by inspecting the code repository. Because the code repository contains a ``requirements.txt``, it will subsequently be interpreted as including a Python application. When such automatic detection is used, ``python:latest`` will be used.
+In the previous example, when using the *``--strategy=source``* since no language type was specified, OpenShift will determine the language by inspecting the code repository. Because the code repository contains a ``requirements.txt``, it will subsequently be interpreted as including a Python application. When such automatic detection is used, ``python:latest`` will be used.
 
 If needing to select a specific Python version, lets say python 2.7, when using ``oc new-app``, you should instead use the syntax:
 
