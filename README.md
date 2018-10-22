@@ -8,10 +8,13 @@ To test this apps you will need an OpenShift or OKD environment.
 
 If using Red Hat CDK you can start OpenShift (Minishift) with the following command:
 ```
-$minishift start
+$ minishift start
+$ oc login -u developer
 ```
 
-Additional minishft commands if using privileged containers
+Some additional Minishft commands if considering the use of privileged containers.
+
+**NOTE**: THESE ARE NOT REQUIRED FOR THIS DEMO
 ```
 $ oc adm policy add-scc-to-group anyuid system:authenticated
 $ minishift addons enable anyuid
@@ -23,6 +26,8 @@ To explore additional Minishift addons
 ```
 $ minishift addons list
 ```
+
+Additional details for Minishift can be found at https://docs.okd.io/latest/minishift/using/basic-usage.html
 
 ## Implementation Notes
 
@@ -47,27 +52,29 @@ The HTTPS URL of this code repository which should be supplied to the _Git Repos
 If using the ``oc`` command line tool instead of the OpenShift web console, to deploy this sample Python web application, you can run:
 
 ```
-oc new-project demo-app
+oc new-project demo-app --display-name='My Demo App'
 ```
 
-To run it from git
+To deploy it from git
+Note: Since the repo contains a Dockerfile we use the *strategy* flag to force it to use s2i.
 ```
-oc new-app https://github.com/williamcaban/openshift-container-name-demo.git
+oc new-app https://github.com/williamcaban/openshift-container-name-demo.git --name=myapp1 --strategy=source
 ```
+
 
 To create a URL route
 ```
-oc expose svc/openshift-container-name-demo
+oc expose svc/myapp1 --name=myroute
 ```
 
 To get the text output displaying the name use the /hello path
 ```
-while sleep 1; do curl http://$(oc get route openshift-container-name-demo --template='{{ .spec.host }}'/hello); echo; done
+while sleep 1; do curl http://$(oc get route myapp1 --template='{{ .spec.host }}'/hello); echo; done
 ```
 
 Scale to 3 replicas and validate pods have been created
 ```
-oc scale --replicas=3 dc/openshift-container-name-demo
+oc scale --replicas=3 dc/myapp1
 
 oc get pods
 ```
@@ -77,11 +84,21 @@ Destroy one of the Pods and watch the system remediate.
 oc delete po/<name-of-pod>
 ```
 
+Deploy other version of the app
+```
+oc new-app https://github.com/williamcaban/openshift-container-name-demo.git --name=myapp2 APP_VERSION=v2
+```
+
+To deploy from local source code using *Docker* strategy
+```
+oc new-app </path/to/code> --strategy=docker
+```
+
 ## Simulating webhooks rebuild events
 
 Display the BuildConfig to identify the "Webhook Generic" URL
 ```
-oc describe bc/openshift-container-name-demo
+oc describe bc/myapp1
 ```
 
 The <secret> in the URL will be the output of this command
@@ -91,11 +108,11 @@ oc get bc -o json | jq '.items[0] .spec.triggers[].generic.secret' | grep -v nul
 
 You can also find the correct URL over the console at the configuration tab of the build config:
 
-https://<your-okd-path>/console/project/demo-app/browse/builds/openshift-container-name-demo?tab=configuration
+https://<your-okd-path>/console/project/demo-app/browse/builds/myapp1?tab=configuration
 
 Simulating a generic Webhook event:
 ```
-curl -X POST -k https://<your-okd-path>/apis/build.openshift.io/v1/namespaces/demo-python/buildconfigs/openshift-container-name-demo/webhooks/<secret>/generic
+curl -X POST -k https://<your-okd-path>/apis/build.openshift.io/v1/namespaces/demo-app/buildconfigs/myapp1/webhooks/<secret>/generic
 ```
 
 ## Notes
@@ -105,5 +122,5 @@ In the previous example, because no language type was specified, OpenShift will 
 If needing to select a specific Python version, lets say python 2.7, when using ``oc new-app``, you should instead use the syntax:
 
 ```
-oc new-app python:2.7~https://github.com/williamcaban/openshift-container-name-demo.git
+oc new-app python:2.7~https://github.com/williamcaban/openshift-container-name-demo.git --name=myapp1
 ```
