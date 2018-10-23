@@ -26,7 +26,7 @@ def index():
 
 @application.route("/hello")
 def hello():
-    return "Hello from " + CONTAINER_NAME + "(" + CONTAINER_VERSION + ")"
+    return "Hello from " + CONTAINER_NAME + " " + CONTAINER_VERSION
 
 @application.route("/_healthz")
 def status():
