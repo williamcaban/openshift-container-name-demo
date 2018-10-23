@@ -9,14 +9,14 @@ To test this apps you will need an OpenShift or OKD environment.
 If using Red Hat CDK you can start OpenShift (Minishift) with the following command:
 ```
 $ minishift start
-$ oc login -u developer
+oc login -u developer
 ```
 
 Some additional Minishft commands if considering the use of privileged containers.
 
-**NOTE**: THESE ARE NOT REQUIRED FOR THIS DEMO
+**NOTE**: THESE ARE NOT REQUIRED FOR THIS DEMO BUT GOOD TO KEEP IN MIND
 ```
-$ oc adm policy add-scc-to-group anyuid system:authenticated
+oc adm policy add-scc-to-group anyuid system:authenticated
 $ minishift addons enable anyuid
 $ minishift addons enable admin-user
 $ minishift start --ocp-tag v3.11.16
@@ -27,7 +27,7 @@ To explore additional Minishift addons
 $ minishift addons list
 ```
 
-Additional details for Minishift can be found at https://docs.okd.io/latest/minishift/using/basic-usage.html
+Additional details about Minishift can be found at https://docs.okd.io/latest/minishift/using/basic-usage.html
 
 ## Implementation Notes
 
@@ -55,8 +55,10 @@ If using the ``oc`` command line tool instead of the OpenShift web console, to d
 oc new-project demo-app --display-name='My Demo App'
 ```
 
-To deploy it from git
-Note: Since the repo contains a Dockerfile we use the *strategy* flag to force it to use s2i.
+To deploy it from git run the following command
+
+* NOTE: Since this demo repo contains a ``Dockerfile``, by default, OpenShift will try to use the ``docker build strategy``. By specifying the *strategy* flag we force OpenShift to use ``s2i build strategy``.
+
 ```
 oc new-app https://github.com/williamcaban/openshift-container-name-demo.git --name=myapp1 --strategy=source
 ```
@@ -71,7 +73,7 @@ oc get route
 
 To get the text output displaying the name use the /hello path. Run the following command in another terminal:
 ```
-while sleep 1; do curl http://$(oc get route myroute --template='{{ .spec.host }}'/hello); echo; done
+$ while sleep 1; do curl http://$(oc get route myroute --template='{{ .spec.host }}'/hello); echo; done
 ```
 
 Scale to 3 replicas and validate pods have been created
@@ -109,17 +111,22 @@ Split traffic among the different versions and monitor the load balancing displa
 oc get route myroute
 
 # Update for 50-25-25 distribution
+
 oc set route-backends myroute myapp1=50% myapp2=25% myapp3=25%
 
 oc get route
 
 # Update for equal traffic distribution
+
 oc set route-backends myroute --equal
 
 oc get route
 
-# Update version 3 to only get 5% and notice the resulting balancing due to weight distribution.
-oc set route-backends myroute --adjust myapp3=5%
+# Remove ~10% of the traffic from version 3 and watch
+# the resulting balancing distribution. The difference
+# between requested vs actual is due to weight distribution.
+
+oc set route-backends myroute --adjust myapp3=-10%
 
 oc get route
 
