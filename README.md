@@ -97,7 +97,7 @@ Deploy another version of the app using ``Docker`` strategy
 oc new-app https://github.com/williamcaban/openshift-container-name-demo.git --name=myapp2 --strategy=docker APP_VERSION=v2
 ```
 
-To deploy from local source code using *``Docker``* strategy
+To deploy from local source code using ``Docker`` strategy
 ```
 oc new-app </path/to/code> --name=<app-name> --strategy=docker APP_VERSION=v3
 
@@ -108,7 +108,7 @@ Split traffic among the different versions and monitor the load balancing displa
 ```
 oc get route myroute
 
-# Update for 50-20-20 distribution
+# Update for 50-25-25 distribution
 oc set route-backends myroute myapp1=50% myapp2=25% myapp3=25%
 
 oc get route
@@ -118,7 +118,7 @@ oc set route-backends myroute --equal
 
 oc get route
 
-# Update version 3 to only get 1% and notice the resulting balancing due to weight distribution.
+# Update version 3 to only get 5% and notice the resulting balancing due to weight distribution.
 oc set route-backends myroute --adjust myapp3=5%
 
 oc get route
