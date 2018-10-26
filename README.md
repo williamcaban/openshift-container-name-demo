@@ -21,11 +21,20 @@ Using the basic funcitonalities of the demo app:
 | /_health   	| Return a JSON formatted status of the app, the container name and container version. 	| This can be used for health checks or pod readiness checks              	|
 | /_net      	| Return a JSON formatted list of the network interfaces seen by the pod.              	| This can be used to demo Multus/OpenShift Multinetwork functionalities. ``(in progress)``	|
 
+## Implementation Notes
+
+This sample Python application relies on the support provided by the default S2I builder for deploying a WSGI application using the ``gunicorn`` WSGI server. The requirements which need to be satisfied for this to work are:
+
+* The WSGI application code file needs to be named ``wsgi.py``.
+* The WSGI application entry point within the code file needs to be named ``application``.
+* The ``gunicorn`` package must be listed in the ``requirements.txt`` file for ``pip``.
+
+In addition, the ``.s2i/environment`` file has been created to allow environment variables to be set to override the behaviour of the default S2I builder for Python.
+
+The environment variable ``APP_CONFIG`` has been set to declare the name of the config file for ``gunicorn`` .
 
 
-
-
-# Using a Minishift Environment
+## Using a Minishift Environment
 
 If using Red Hat CDK you can start OpenShift (Minishift) with the following command:
 ```
@@ -48,21 +57,10 @@ To explore additional Minishift addons
 $ minishift addons list
 ```
 
-Additional details about Minishift can be found at https://docs.okd.io/latest/minishift/using/basic-usage.html
+Additional details about Minishift can be found at
+- https://docs.okd.io/latest/minishift/using/basic-usage.html
 
-## Implementation Notes
-
-This sample Python application relies on the support provided by the default S2I builder for deploying a WSGI application using the ``gunicorn`` WSGI server. The requirements which need to be satisfied for this to work are:
-
-* The WSGI application code file needs to be named ``wsgi.py``.
-* The WSGI application entry point within the code file needs to be named ``application``.
-* The ``gunicorn`` package must be listed in the ``requirements.txt`` file for ``pip``.
-
-In addition, the ``.s2i/environment`` file has been created to allow environment variables to be set to override the behaviour of the default S2I builder for Python.
-
-* The environment variable ``APP_CONFIG`` has been set to declare the name of the config file for ``gunicorn``.
-
-## Deployment Steps
+# Demo and Lab Steps
 
 To deploy this sample Python web application from the OpenShift web console, you should select ``python:2.7``, ``python:3.3``, ``python:3.4`` or ``python:latest``, when using _Add to project_. Use of ``python:latest`` is the same as having selected the most up to date Python version available, which at this time is ``python:3.4``.
 

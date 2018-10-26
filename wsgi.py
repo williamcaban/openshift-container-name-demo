@@ -5,6 +5,8 @@ import os
 from flask import json
 from flask import jsonify
 
+import netifaces
+
 application = Flask(__name__)
 
 CONTAINER_NAME=os.uname()[1]
@@ -38,10 +40,17 @@ def status():
 
 @application.route("/_net")
 def pod_ifaces():
+    netiflist=netifaces.interfaces()
+    first_inet_if = netiflist[0]
+    try:
+        first_inet = netifaces.ifaddresses(first_inet_if)[netifaces.AF_INET]
+    except:
+        first_inet = first_inet_if + " Does not contains valid IPv4"
     return jsonify(status="OK",
                    container_name=CONTAINER_NAME,
                    container_version=CONTAINER_VERSION,
-                   interface_name='<not implemented>')
+                   interface_list=netiflist,
+                   first_inet=first_inet)
 
 if __name__ == "__main__":
     application.run()
