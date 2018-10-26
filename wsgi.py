@@ -38,19 +38,26 @@ def status():
                    container_message=CONTAINER_MESSAGE)
 
 
-@application.route("/_net")
-def pod_ifaces():
-    netiflist=netifaces.interfaces()
-    first_inet_if = netiflist[0]
-    try:
-        first_inet = netifaces.ifaddresses(first_inet_if)[netifaces.AF_INET]
-    except:
-        first_inet = first_inet_if + " Does not contains valid IPv4"
-    return jsonify(status="OK",
-                   container_name=CONTAINER_NAME,
-                   container_version=CONTAINER_VERSION,
-                   interface_list=netiflist,
-                   first_inet=first_inet)
+@application.route("/_net", defaults={'ifname':0})
+@application.route("/_net/<ifname>")
+def pod_ifaces(ifname):
+    netiflist = netifaces.interfaces()
+
+    if ifname in netiflist:
+        # invoking route /_net/<ifname> with valid ifname
+        try:
+            ifname_addr = netifaces.ifaddresses(ifname)[netifaces.AF_INET]
+        except:
+            ifname_addr = ifname + " does not have a valid IPv4"
+
+        return jsonify( container_name=CONTAINER_NAME,
+                        container_version=CONTAINER_VERSION,
+                        ifname_addr=ifname_addr)
+    else:
+        # invoking route /_net route or not a valid ifname
+        return jsonify( container_name=CONTAINER_NAME,
+                        container_version=CONTAINER_VERSION,
+                        interface_list=netiflist)
 
 if __name__ == "__main__":
     application.run()

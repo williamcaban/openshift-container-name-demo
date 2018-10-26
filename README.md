@@ -19,7 +19,8 @@ Using the basic funcitonalities of the demo app:
 |   /           | Display a simple web interface with the name of the Pod, ``APP_VERSION`` and ``APP_MESSAGE`` information. | This can be used to demo from a browser |
 |   /hello   	| Return a single liner text version of the Pod name and ``APP_VERSION``.                  	| This can be used to demo from a ``curl`` command or similar             	|
 | /_health   	| Return a JSON formatted status of the app, the container name and container version. 	| This can be used for health checks or pod readiness checks              	|
-| /_net      	| Return a JSON formatted list of the network interfaces seen by the pod.              	| This can be used to demo Multus/OpenShift Multinetwork functionalities. ``(in progress)``	|
+| /_net      	| Return a JSON formatted list of the network interfaces seen by the pod.              	| This can be used to demo Multus/OpenShift Multinetwork functionalities.	|
+| /_net/\<ifname>      	| Return a JSON formatted list of IPv4 addresses of *ifname* Pod interface.              	| This can be used to demo Multus/OpenShift Multinetwork functionalities.	|
 
 ## Implementation Notes
 
