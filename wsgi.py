@@ -36,5 +36,12 @@ def status():
                    container_message=CONTAINER_MESSAGE)
 
 
+@application.route("/_net")
+def pod_ifaces():
+    return jsonify(status="OK",
+                   container_name=CONTAINER_NAME,
+                   container_version=CONTAINER_VERSION,
+                   interface_name='<not implemented>')
+
 if __name__ == "__main__":
     application.run()

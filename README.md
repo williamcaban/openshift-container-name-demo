@@ -4,6 +4,30 @@ This repository provides a sample Python web application implemented using the F
 
 To test this apps you will need an OpenShift or OKD environment.
 
+# Using the application
+
+The application understand the following environment variables
+- APP_VERSION
+- APP_MESSAGE
+
+The values are displayed as the application version value and a text message.
+
+Accessing the basic funcitonalities of the app:
+
+| ROUTE PATH 	|                                     FUNCTIONALITY                                    	|                                USE CASES                                	|
+|:----------:	|:------------------------------------------------------------------------------------:	|:-----------------------------------------------------------------------:	|
+|   /           | Display a simple web interface with the name of the Pod, ``APP_VERSION`` and ``APP_MESSAGE`` information. | This can be used to demo from a browser |
+|   /hello   	| Return a single liner text version of the Pod name and ``APP_VERSION``.                  	| This can be used to demo from a ``curl`` command or similar             	|
+| /_health   	| Return a JSON formatted status of the app, the container name and container version. 	| This can be used for health checks or pod readiness checks              	|
+| /_net      	| Return a JSON formatted list of the network interfaces seen by the pod.              	| This can be used to demo Multus/OpenShift Multinetwork functionalities. ``(in progress)``	|
+
+
+| / | display a simple web interface with the name of the Pod, APP_VERSION and APP_MESSAGE information. This can be used to demo from a browser
+- http://your_app_domain``/hello`` -- return a single liner text version of the Pod name and APP_VERSION. This can be used to demo from a ``curl`` command or similar
+- http://your_app_domain``/_health`` -- Return a JSON formated status of the app, the container name and container version. This can be used for health checks or pod readiness checks
+- `(in progress)` http://your_app_domain``/_nets`` -- Return a JSON formated list of the network interfaces seen by the pod. This can be used to demo Multus/OpenShift Multinetwork functionalities.
+
+
 # Using a Minishift Environment
 
 If using Red Hat CDK you can start OpenShift (Minishift) with the following command:
