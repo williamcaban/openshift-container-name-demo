@@ -1,3 +1,5 @@
+[![Docker Repository on Quay](https://quay.io/repository/redhat/wcabanba/status "Docker Repository on Quay")](https://quay.io/repository/redhat/wcabanba)
+
 # Simple Demo Application Used to Showcase OpenShift Concepts
 
 This repository provides a sample Python web application implemented using the Flask web framework. It is intended to be used to demonstrate deployment of Python web applications to OpenShift 3.x
